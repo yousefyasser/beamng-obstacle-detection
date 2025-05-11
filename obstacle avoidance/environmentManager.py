@@ -1,7 +1,8 @@
 from beamngpy import BeamNGpy, Scenario, Vehicle
 from beamngpy.sensors import Camera
-from typing import Optional
+from typing import Tuple, Optional
 from PIL import Image
+from logger import system_logger
 
 
 class EnvironmentManager:
@@ -10,27 +11,39 @@ class EnvironmentManager:
         self.beamng = BeamNGpy(host, port)
         self.vehicle = None
         self.camera = None
+        self.logger = system_logger.environment_logger
         self.setup_environment()
 
     def setup_environment(self):
-        self.beamng.open()
-        scenario = Scenario("italy", "driver_comfort")
-        
-        self.vehicle = Vehicle("ego", model="etk800", license="SENSORS", color="Blue")
-        self.obstacle = Vehicle("obstacle", model="etk800", license="SENSORS2", color="White")
-        
-        scenario.add_vehicle(self.vehicle, pos=(237.90, -894.42, 246.10), 
-                           rot_quat=(0.0173, -0.0019, -0.6354, 0.7720))
-        scenario.add_vehicle(self.obstacle, pos=(244.90, -894.42, 246.10), 
-                           rot_quat=(0.0173, -0.0019, -0.6354, 0.7720))
-        
-        scenario.make(self.beamng)
-        self.beamng.scenario.load(scenario)
-        self.beamng.settings.set_deterministic()
-        self.beamng.settings.set_steps_per_second(60)
-        self.beamng.scenario.start()
-        
-        self.setup_camera()
+        """Set up the BeamNG environment"""
+        try:
+            self.beamng.open()
+            scenario = Scenario("italy", "driver_comfort")
+            
+            self.vehicle = Vehicle("ego", model="etk800", license="SENSORS", color="Blue")
+            self.obstacle = Vehicle("obstacle", model="etk800", license="SENSORS2", color="White")
+            
+            scenario.add_vehicle(
+                self.vehicle, 
+                pos=(237.90, -894.42, 246.10), 
+                rot_quat=(0.0173, -0.0019, -0.6354, 0.7720)
+            )
+            scenario.add_vehicle(
+                self.obstacle, 
+                pos=(244.90, -894.42, 246.10), 
+                rot_quat=(0.0173, -0.0019, -0.6354, 0.7720)
+            )
+            
+            scenario.make(self.beamng)
+            self.beamng.scenario.load(scenario)
+            self.beamng.settings.set_deterministic()
+            self.beamng.settings.set_steps_per_second(60)
+            self.beamng.scenario.start()
+            
+            self.setup_camera()
+        except Exception as e:
+            self.logger.error(f"Failed to setup environment: {str(e)}")
+            raise
 
     def setup_camera(self):
         self.camera = Camera(

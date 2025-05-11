@@ -4,49 +4,52 @@ from time import sleep
 from detectionManager import DetectionManager
 from environmentManager import EnvironmentManager
 from visualizationManager import VisualizationManager
-from imageProcessor import GaussianNoiseProcessor, GaussianBlurProcessor, BrightnessContrastProcessor, RainEffectProcessor, ColorFilterProcessor
+from imageProcessor import ImageProcessingPipeline, GaussianNoiseProcessor, GaussianBlurProcessor, BrightnessContrastProcessor, RainEffectProcessor, ColorFilterProcessor
+from logger import system_logger
 
 
 class ObstacleAvoidanceSystem:
     """Main class that coordinates all components"""
     def __init__(self, host: str, port: int):
+        self.logger = system_logger.logger
+        self.logger.info("Starting obstacle avoidance system")
+        
         self.environment = EnvironmentManager(host, port)
         self.detector = DetectionManager()
         self.visualizer = VisualizationManager()
         
         # Initialize image processors
-        self.image_processors = [
+        self.image_processors = ImageProcessingPipeline([
             GaussianNoiseProcessor(),
             GaussianBlurProcessor(radius=1),
             BrightnessContrastProcessor(),
             RainEffectProcessor(intensity=0.01),
             ColorFilterProcessor()
-        ]
-
-    def process_image(self, image: Image.Image) -> Image.Image:
-        for processor in self.image_processors:
-            image = processor.process(image)
-        return image
+        ])
 
     def run(self):
-        try:
-            while True:
+        while True:
+            try:
                 image = self.environment.get_camera_image()
-                if image is not None:
-                    # Process image
-                    processed_image = self.process_image(image)
-                    
-                    # Detect objects
-                    detections = self.detector.detect(processed_image)
-                    
-                    # Visualize results
-                    self.visualizer.visualize(processed_image, detections)
+                if image is None:
+                    self.logger.warning("No image received from camera")
+                    continue
+                
+                processed_image = self.image_processors.process(image)
+                
+                detections = self.detector.detect(processed_image)
+                
+                self.visualizer.visualize(processed_image, detections)
                 
                 sleep(0.05)
-        except KeyboardInterrupt:
-            pass
-        finally:
-            self.cleanup()
+            except KeyboardInterrupt:
+                self.logger.info("Received keyboard interrupt, stopping...")
+                break
+            except Exception as e:
+                self.logger.error(f"Error in main loop: {str(e)}")
+                continue
+
+        self.cleanup()
 
     def cleanup(self):
         self.visualizer.cleanup()
