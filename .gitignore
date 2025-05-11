@@ -1,1 +1,5 @@
+maps/
+venv/
 virtualEnv/
+
+**/__pycache__/
