@@ -1,26 +1,126 @@
-# Investigating sensor errors and safety in Autonomous-Vehicles (in collaboration with Siemens Innexis VSI and BeamNG)
+# Autonomous Vehicle Obstacle Avoidance System
 
-## Installation steps
+A real-time obstacle detection and avoidance system for autonomous vehicles using computer vision and deep learning, developed in collaboration with Siemens Innexis VSI and BeamNG.
 
-- Follow installation steps for BeamNG after obtaining their license
-- Add BNG_HOME=/path/to/beamng to your environment variables
-- Create and activate virtual environment in project root:
+## Project Overview
 
-    ```
-    python -m venv virtualEnv
-    virtualEnv/Scripts/activate
-    ```
+This system implements real-time object detection and obstacle avoidance for autonomous vehicles using:
+- DETR (DEtection TRansformer) for object detection
+- BeamNG.tech for vehicle simulation and visualization
+- Real-time performance monitoring and optimization
+- Advanced image processing pipeline
 
-- Install project dependencies:
+## System Architecture
 
-    ```
-    pip install -r requirements.txt
-    ```
+The project is organized into several key components:
 
-<details>
-    <summary>Windows</summary>
-</details>
+### 1. Detection Manager (`detectionManager.py`)
+- Implements DETR-based object detection
+- Handles model initialization and inference
+- Processes camera images to detect obstacles
+- Optimized for real-time performance
 
-<details>
-    <summary>Linux/MacOS</summary>
-</details>
+### 2. Image Processing Pipeline (`imageProcessor.py`)
+- Modular image processing system
+- Implements various effects:
+  - Gaussian Noise
+  - Gaussian Blur
+  - Brightness/Contrast adjustment
+  - Rain Effect
+  - Color Filtering
+- Caching system for performance optimization
+
+### 3. Visualization Manager (`visualizationManager.py`)
+- Handles real-time visualization of detections
+- Implements bounding box drawing
+- Manages text overlays and annotations
+- Optimized for smooth rendering
+
+### 4. Environment Manager (`environmentManager.py`)
+- Manages BeamNG.tech integration
+- Handles vehicle control and camera setup
+- Manages simulation environment
+
+### 5. Performance Monitoring (`performanceMonitor.py`)
+- Tracks system performance metrics
+- Monitors CPU, memory, and GPU usage
+- Provides detailed performance reports
+- Implements adaptive frame timing
+
+## Installation
+
+### Prerequisites
+- Python 3.9 or higher
+- BeamNG.tech license and installation
+
+### Environment Setup
+
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd [repository-name]
+```
+
+2. Create and activate virtual environment:
+```bash
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# Linux/MacOS
+source venv/bin/activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Set up BeamNG environment variable:
+```bash
+# Windows
+set BNG_HOME=C:\path\to\beamng
+# Linux/MacOS
+export BNG_HOME=/path/to/beamng
+```
+
+## Usage
+
+1. Run the main script:
+```bash
+python obstacle_avoidance/main.py
+```
+
+2. The system will:
+   - Initialize the detection model
+   - Set up the visualization
+   - Begin processing camera feed
+   - Display real-time detections
+
+## Project Structure
+
+```
+obstacle_avoidance/
+├── main.py                 # Main application entry point
+├── detectionManager.py     # Object detection implementation
+├── imageProcessor.py       # Image processing pipeline
+├── visualizationManager.py # Visualization handling
+├── environmentManager.py   # BeamNG integration
+└── DTO/                    # Data Transfer Objects
+    └── detection.py        # Detection data structures
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+## Acknowledgments
+
+- Siemens Innexis VSI
+- BeamNG.tech
+- Facebook Research (DETR model)
