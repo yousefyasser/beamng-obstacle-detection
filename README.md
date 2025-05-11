@@ -4,6 +4,18 @@
 
 - Follow installation steps for BeamNG after obtaining their license
 - Add BNG_HOME=/path/to/beamng to your environment variables
+- Create and activate virtual environment in project root:
+
+    ```
+    python -m venv virtualEnv
+    virtualEnv/Scripts/activate
+    ```
+
+- Install project dependencies:
+
+    ```
+    pip install -r requirements.txt
+    ```
 
 <details>
     <summary>Windows</summary>
