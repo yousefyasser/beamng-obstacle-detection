@@ -33,7 +33,8 @@ class VisualizationManager:
     def __init__(self, window_name: str = 'Object Detection'):
         self.window_name = window_name
         cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
-        cv2.resizeWindow(window_name, 1280, 720)
+        cv2.resizeWindow(window_name, 640, 480)
+        cv2.moveWindow(window_name, 100, 100)
 
     def visualize(self, image: Image.Image, detections: List[Detection]):
         img = np.array(image)

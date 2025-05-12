@@ -38,10 +38,13 @@ class ObstacleAvoidanceSystem:
                 processed_image = self.image_processors.process(image)
                 
                 detections = self.detector.detect(processed_image)
-                
+
+                is_car_ahead = self.detector.is_car_detected(detections)
+                self.environment.control_vehicles(is_car_ahead)
+
                 self.visualizer.visualize(processed_image, detections)
                 
-                sleep(0.05)
+                sleep(0.01)
             except KeyboardInterrupt:
                 self.logger.info("Received keyboard interrupt, stopping...")
                 break

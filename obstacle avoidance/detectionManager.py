@@ -68,3 +68,11 @@ class DetectionManager:
         b = [(x_c - 0.5 * w), (y_c - 0.5 * h),
              (x_c + 0.5 * w), (y_c + 0.5 * h)]
         return torch.stack(b, dim=1)
+    
+    def is_car_detected(self, detections: List[Detection]) -> bool:
+        """Check if a car is detected in the image"""
+        for detection in detections:
+            if detection.class_id == 3:
+                return True
+        return False
+
