@@ -1,10 +1,16 @@
 import torch
 import torchvision.transforms as T
 from PIL import Image
-from typing import List
-from DTO.detection import Detection
-from logger import system_logger
+from typing import List, Optional
+from dataclasses import dataclass
+from ..utils.logger import system_logger
 
+@dataclass
+class Detection:
+    """Data class for storing detection information"""
+    class_id: int
+    confidence: float
+    bbox: tuple[float, float, float, float]
 
 class DetectionManager:
     """Class responsible for object detection using DETR model"""
@@ -72,7 +78,7 @@ class DetectionManager:
     def is_car_detected(self, detections: List[Detection]) -> bool:
         """Check if a car is detected in the image"""
         for detection in detections:
-            if detection.class_id == 3:
+            if detection.class_id == 3:  # 3 is the class ID for car in COCO dataset
                 return True
         return False
 

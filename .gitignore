@@ -1,4 +1,7 @@
+logs/
 maps/
+output/
+output_backup/
 venv/
 virtualEnv/
 
