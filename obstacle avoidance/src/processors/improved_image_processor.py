@@ -19,7 +19,15 @@ class MetricsTrackingProcessor(BaseImageProcessor):
     """Abstract base class for image processing operations with metrics tracking"""
     def __init__(self, config: ImprovedProcessingConfig):
         super().__init__(config)
-        self.last_metrics = {}
+        self.last_metrics = {
+            "rain_intensity": 0.0,
+            "rain_drops": 0,
+            "coverage_percent": 0.0,
+
+            "fog_intensity": 0.0,
+            "visibility": 1.0,
+            "contrast_reduction_percent": 0.0
+        }
 
     @abstractmethod
     def process(self, image: Image.Image) -> Image.Image:
@@ -249,15 +257,6 @@ class ColorFilterProcessor(MetricsTrackingProcessor):
 
 
 class FogEffectProcessor(MetricsTrackingProcessor):
-    """Add fog effect to the image with metrics tracking"""
-    def __init__(self, config: ImprovedProcessingConfig):
-        super().__init__(config)
-        self.last_metrics = {
-            "fog_intensity": 0.0,
-            "visibility": 1.0,
-            "contrast_reduction_percent": 0.0
-        }
-
     def process(self, image: Image.Image) -> Image.Image:
         try:
             if not self._validate_image(image):

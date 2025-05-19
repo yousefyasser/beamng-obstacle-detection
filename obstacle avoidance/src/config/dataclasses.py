@@ -7,14 +7,16 @@ class VehicleConfig:
     model: str = "etk800"
     color: str = "Blue"
     license: str = "SENSORS"
-    position: Tuple[float, float, float] = (-9, -15, 3.5)
-    rotation: Tuple[float, float, float, float] = (0, 0, 0.05, 1)
+    # position: Tuple[float, float, float] = (-9, -15, 3.5)
+    # rotation: Tuple[float, float, float, float] = (0, 0, 0.05, 1)
+    position: Tuple[float, float, float] = (237.90, -894.42, 246.10)
+    rotation: Tuple[float, float, float, float] = (0.0173, -0.0019, -0.6354, 0.7720)
 
 @dataclass
 class CameraConfig:
     """Configuration for camera setup"""
     position: Tuple[float, float, float] = (-0.3, -1.6, 1.2)
-    direction: Tuple[float, float, float] = (0, -1, 0.5)
+    direction: Tuple[float, float, float] = (0, -1, 0)
     fov: float = 70
     resolution: Tuple[int, int] = (640, 480)
     update_time: float = 0.01
@@ -35,12 +37,9 @@ class ProcessingConfig:
     gaussian_blur_radius: float = 2.0
     brightness_factor: float = 0.7
     contrast_factor: float = 1.2
-    rain_intensity: float = 0.1
+    rain_intensity: float = 0.05
     color_shift: Tuple[int, int, int] = (0, 0, 255)
     fog_intensity: float = 0.5
-    glare_position: Tuple[float, float] = (0.8, 0.2)
-    glare_size: float = 0.2
-    glare_intensity: float = 0.8
 
 @dataclass
 class AnomalyThresholds:
@@ -50,7 +49,6 @@ class AnomalyThresholds:
     rain: Dict[str, float] = None
     color: Dict[str, float] = None
     fog: Dict[str, float] = None
-    glare: Dict[str, float] = None
 
     def __post_init__(self):
         if self.noise is None:
@@ -69,7 +67,7 @@ class AnomalyThresholds:
             }
         if self.rain is None:
             self.rain = {
-                'coverage_threshold': 5.0
+                'rain_intensity_threshold': 0.05
             }
         if self.color is None:
             self.color = {
@@ -77,11 +75,7 @@ class AnomalyThresholds:
             }
         if self.fog is None:
             self.fog = {
-                'fog_threshold': 0.75
-            }
-        if self.glare is None:
-            self.glare = {
-                'intensity_threshold': 0.6
+                'fog_threshold': 0.45
             }
 
 @dataclass

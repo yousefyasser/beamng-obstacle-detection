@@ -85,13 +85,11 @@ class AnomalyDetector:
                              brightness_increase * 0.3
                 
                 metrics['fog_intensity'] = float(fog_estimate)
-            
-            # Calculate glare metrics
-            if len(img_array.shape) == 3:
-                # Estimate glare by analyzing bright regions
-                bright_pixels = np.sum(gray > 200) / gray.size
-                metrics['glare_intensity'] = float(bright_pixels)
-            
+
+                # Calculate rain metrics
+                rain_intensity = np.sum(img_array == [255, 255, 255]) / (img_array.shape[0] * img_array.shape[1])
+                metrics['rain_intensity'] = float(rain_intensity)
+                
         except Exception as e:
             self.logger.error(f"Error calculating image metrics: {str(e)}")
         
@@ -156,16 +154,17 @@ class AnomalyDetector:
                         value=metrics["fog_intensity"],
                         threshold=thresholds["fog_threshold"]
                     ))
-            
-            elif processor_name == "glare":
-                if "glare_threshold" in thresholds and "glare_intensity" in metrics:
+
+            elif processor_name == "rain":
+                if "rain_intensity_threshold" in thresholds and "rain_intensity" in metrics:
                     anomalies.append(Anomaly(
-                        type="glare",
-                        severity="high" if metrics["glare_intensity"] > thresholds["glare_threshold"] else "medium",
-                        metric="Glare Intensity",
-                        value=metrics["glare_intensity"],
-                        threshold=thresholds["glare_threshold"]
+                        type="rain",
+                        severity="high" if metrics["rain_intensity"] > thresholds["rain_intensity_threshold"] else "medium",
+                        metric="Rain Intensity",
+                        value=metrics["rain_intensity"],
+                        threshold=thresholds["rain_intensity_threshold"]
                     ))
+            
             
         except Exception as e:
             self.logger.error(f"Error checking {processor_name} anomalies: {str(e)}")

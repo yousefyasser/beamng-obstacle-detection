@@ -22,7 +22,8 @@ class EnvironmentManager:
         self.obstacle_config = VehicleConfig(
             color="White",
             license="SENSORS2",
-            position=(-13, -60, 3.5)
+            position=(186, -940, 273),
+            rotation=(0.0096, -0.0077, 0.9999, 0.0050)
         )
         self.camera_config = CameraConfig()
         
@@ -32,7 +33,7 @@ class EnvironmentManager:
         """Set up the BeamNG environment"""
         try:
             self.beamng.open()
-            scenario = Scenario("smallgrid", "driver_comfort")
+            scenario = Scenario("italy", "driver_comfort")
             
             # Setup ego vehicle
             self.vehicle = Vehicle(
@@ -67,9 +68,20 @@ class EnvironmentManager:
             self.beamng.scenario.load(scenario)
             self.beamng.settings.set_deterministic()
             self.beamng.settings.set_steps_per_second(60)
+            # self.beamng.env.set_tod(0.75)
+            # self.beamng.env.set_weather_preset('rainy')
+            # self.beamng.env.set_weather_preset('foggy_night')
             self.beamng.scenario.start()
             
             self.setup_camera()
+            # waypoints = scenario.find_waypoints()
+            # for waypoint in waypoints:
+            #     self.logger.info(waypoint)
+
+            # self.vehicle.set_lights(headlights=2)
+            # self.vehicle.set_lights(fog_lights=2)
+            self.vehicle.ai.set_mode('manual')
+            self.vehicle.ai.set_waypoint('mountain_village_road1_x')
             self.logger.info("Environment setup completed successfully")
             
         except Exception as e:
@@ -114,9 +126,13 @@ class EnvironmentManager:
         try:
             if car_detected or self.vehicle_detected:
                 self.vehicle_detected = True
+                self.vehicle.ai.set_mode('disabled')
                 self.vehicle.control(throttle=0.0, brake=1.0, gear=0)
+                self.logger.info("Vehicle detected, stopping")        
             else:
-                self.vehicle.control(throttle=0.1)
+                self.vehicle.ai.set_mode('manual')
+                self.vehicle.ai.set_waypoint('mountain_village_road1_x')
+
         except Exception as e:
             self.logger.error(f"Failed to control vehicles: {str(e)}")
 

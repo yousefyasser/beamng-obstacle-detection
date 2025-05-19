@@ -65,6 +65,9 @@ class ObstacleAvoidanceSystem:
         try:
             while True:
                 try:
+                    self.environment.vehicle.sensors.poll()
+                    self.logger.info(self.environment.vehicle.state['pos'])
+                    self.logger.info(self.environment.vehicle.state['dir'])
                     # Get raw image from camera
                     image = self.environment.get_camera_image()
                     if image is None:
@@ -104,6 +107,7 @@ class ObstacleAvoidanceSystem:
                     
                     # Detect objects
                     detections = self.detector.detect(processed_image)
+                    detections = []
                     
                     # Determine if car is ahead
                     is_car_ahead = self.detector.is_car_detected(detections)
