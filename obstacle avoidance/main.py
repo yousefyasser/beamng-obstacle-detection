@@ -38,6 +38,8 @@ class ObstacleAvoidanceSystem:
             # Initialize components with configuration
             self.environment = EnvironmentManager(host, port)
             self.detector = DetectionManager()
+
+            self.visualization_config.class_names = self.detector.get_class_names()
             self.visualizer = VisualizationManager(config=self.visualization_config)
             
             # Initialize image processors with configuration
@@ -62,12 +64,14 @@ class ObstacleAvoidanceSystem:
 
     def run(self):
         """Main system loop"""
+        count = 0
         try:
             while True:
                 try:
                     self.environment.vehicle.sensors.poll()
-                    self.logger.info(self.environment.vehicle.state['pos'])
-                    self.logger.info(self.environment.vehicle.state['dir'])
+                    self.environment.obstacle.sensors.poll()
+                    # self.logger.info(self.environment.vehicle.state['pos'])
+                    # self.logger.info(self.environment.vehicle.state['rotation'])
                     # Get raw image from camera
                     image = self.environment.get_camera_image()
                     if image is None:
@@ -107,7 +111,10 @@ class ObstacleAvoidanceSystem:
                     
                     # Detect objects
                     detections = self.detector.detect(processed_image)
-                    detections = []
+
+                    # if count % 10 == 0:
+                    #     visualized_image.save(f"integrated_output_{count}.jpg")
+                    # count += 1
                     
                     # Determine if car is ahead
                     is_car_ahead = self.detector.is_car_detected(detections)
@@ -119,7 +126,7 @@ class ObstacleAvoidanceSystem:
                     self.visualizer.visualize(processed_image, detections, is_car_ahead)
                     self.visualizer.reset_error_propagation()
                     
-                    sleep(0.01)
+                    sleep(0.02)
                     
                 except KeyboardInterrupt:
                     self.logger.info("Received keyboard interrupt, stopping...")

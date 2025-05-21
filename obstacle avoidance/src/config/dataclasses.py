@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Tuple, Any, Optional
+from typing import Dict, Tuple, Any
 
 @dataclass
 class VehicleConfig:
@@ -7,10 +7,8 @@ class VehicleConfig:
     model: str = "etk800"
     color: str = "Blue"
     license: str = "SENSORS"
-    # position: Tuple[float, float, float] = (-9, -15, 3.5)
-    # rotation: Tuple[float, float, float, float] = (0, 0, 0.05, 1)
-    position: Tuple[float, float, float] = (237.90, -894.42, 246.10)
-    rotation: Tuple[float, float, float, float] = (0.0173, -0.0019, -0.6354, 0.7720)
+    position: Tuple[float, float, float] = (225.819738201797, -965.6643868908286, 263.4853021381423)
+    rotation: Tuple[float, float, float, float] = (0.0173, -0.0019, 0.0000, 0.7720)
 
 @dataclass
 class CameraConfig:
@@ -19,7 +17,7 @@ class CameraConfig:
     direction: Tuple[float, float, float] = (0, -1, 0)
     fov: float = 70
     resolution: Tuple[int, int] = (640, 480)
-    update_time: float = 0.01
+    update_time: float = 0.02
 
 @dataclass
 class Anomaly:
@@ -85,10 +83,11 @@ class VisualizationConfig:
     error_window_name: str = 'Error Propagation'
     anomaly_window_name: str = 'Anomaly Detection'
     output_dir: str = 'output'
-    save_interval: int = 5  # Save visualization every 5 seconds
+    save_interval: int = 2  # Save visualization every 5 seconds
     main_window_size: tuple[int, int] = (640, 480)
     error_window_size: tuple[int, int] = (640, 480)
     anomaly_window_size: tuple[int, int] = (640, 480)
     font_scale: float = 0.7
     font_thickness: int = 1
     line_thickness: int = 2
+    class_names: list[str] = None

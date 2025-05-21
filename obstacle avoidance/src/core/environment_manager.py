@@ -1,10 +1,10 @@
 from beamngpy import BeamNGpy, Scenario, Vehicle
 from beamngpy.sensors import Camera
-from typing import Tuple, Optional
+from typing import Optional
 from PIL import Image
-from dataclasses import dataclass
 from ..utils.logger import system_logger
 from ..config.dataclasses import VehicleConfig, CameraConfig
+import math
 
 
 class EnvironmentManager:
@@ -68,7 +68,7 @@ class EnvironmentManager:
             self.beamng.scenario.load(scenario)
             self.beamng.settings.set_deterministic()
             self.beamng.settings.set_steps_per_second(60)
-            # self.beamng.env.set_tod(0.75)
+            self.beamng.env.set_tod(0.0)
             # self.beamng.env.set_weather_preset('rainy')
             # self.beamng.env.set_weather_preset('foggy_night')
             self.beamng.scenario.start()
@@ -79,7 +79,7 @@ class EnvironmentManager:
             #     self.logger.info(waypoint)
 
             # self.vehicle.set_lights(headlights=2)
-            # self.vehicle.set_lights(fog_lights=2)
+            self.vehicle.set_lights(fog_lights=2)
             self.vehicle.ai.set_mode('manual')
             self.vehicle.ai.set_waypoint('mountain_village_road1_x')
             self.logger.info("Environment setup completed successfully")
@@ -128,13 +128,18 @@ class EnvironmentManager:
                 self.vehicle_detected = True
                 self.vehicle.ai.set_mode('disabled')
                 self.vehicle.control(throttle=0.0, brake=1.0, gear=0)
-                self.logger.info("Vehicle detected, stopping")        
-            else:
-                self.vehicle.ai.set_mode('manual')
-                self.vehicle.ai.set_waypoint('mountain_village_road1_x')
-
+                
+                crash_distance = self.calculate_crash_distance()
+                self.logger.info(f"Crash distance: {crash_distance}")
         except Exception as e:
             self.logger.error(f"Failed to control vehicles: {str(e)}")
+
+    def calculate_crash_distance(self):
+        """Calculate the crash distance"""
+        car1_pos = self.vehicle.state['pos']
+        car2_pos = self.obstacle.state['pos']
+        distance = math.sqrt((car1_pos[0] - car2_pos[0])**2 + (car1_pos[1] - car2_pos[1])**2 + (car1_pos[2] - car2_pos[2])**2)
+        return distance
 
     def cleanup(self):
         """Clean up resources"""
