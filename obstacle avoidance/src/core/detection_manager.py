@@ -34,7 +34,7 @@ class DetectionManager:
         """Initialize the YOLOv11n model"""
         try:
             # Load YOLOv11n model
-            self.model = YOLO("yolo11n.pt")
+            self.model = YOLO("yolo11m.pt")
             
             # Set the device if not auto
             if self.device != 'auto':

@@ -7,8 +7,10 @@ class VehicleConfig:
     model: str = "etk800"
     color: str = "Blue"
     license: str = "SENSORS"
-    position: Tuple[float, float, float] = (225.819738201797, -965.6643868908286, 263.4853021381423)
-    rotation: Tuple[float, float, float, float] = (0.0173, -0.0019, 0.0000, 0.7720)
+    position: Tuple[float, float, float] = (314.31365136802197, 119.54647984728217, 133.20636322908103)
+    rotation: Tuple[float, float, float, float] = (0.02141084335744381, 0.03649987280368805, -0.7528539299964905, 0.6568260192871094)
+    # position: Tuple[float, float, float] = (225.819738201797, -965.6643868908286, 263.4853021381423)
+    # rotation: Tuple[float, float, float, float] = (0.0173, -0.0019, 0.0000, 0.7720)
 
 @dataclass
 class CameraConfig:

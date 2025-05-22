@@ -22,8 +22,8 @@ class EnvironmentManager:
         self.obstacle_config = VehicleConfig(
             color="White",
             license="SENSORS2",
-            position=(186, -940, 273),
-            rotation=(0.0096, -0.0077, 0.9999, 0.0050)
+            position=(177.7437484525144, -289.24007438097397, 120.87310647928098),
+            rotation=(-0.0065559144131839275, 0.007147226948291063, 0.708286702632904, 0.7058582305908203)
         )
         self.camera_config = CameraConfig()
         
@@ -33,7 +33,7 @@ class EnvironmentManager:
         """Set up the BeamNG environment"""
         try:
             self.beamng.open()
-            scenario = Scenario("italy", "driver_comfort")
+            scenario = Scenario("automation_test_track", "weather_test")
             
             # Setup ego vehicle
             self.vehicle = Vehicle(
@@ -68,20 +68,20 @@ class EnvironmentManager:
             self.beamng.scenario.load(scenario)
             self.beamng.settings.set_deterministic()
             self.beamng.settings.set_steps_per_second(60)
-            self.beamng.env.set_tod(0.0)
+            # self.beamng.env.set_tod(0.0)
             # self.beamng.env.set_weather_preset('rainy')
             # self.beamng.env.set_weather_preset('foggy_night')
             self.beamng.scenario.start()
             
             self.setup_camera()
-            # waypoints = scenario.find_waypoints()
-            # for waypoint in waypoints:
-            #     self.logger.info(waypoint)
+            waypoints = scenario.find_waypoints()
+            for waypoint in waypoints:
+                self.logger.info(waypoint)
 
             # self.vehicle.set_lights(headlights=2)
-            self.vehicle.set_lights(fog_lights=2)
+            # self.vehicle.set_lights(fog_lights=2)
             self.vehicle.ai.set_mode('manual')
-            self.vehicle.ai.set_waypoint('mountain_village_road1_x')
+            self.vehicle.ai.set_waypoint('bridge_river_a')
             self.logger.info("Environment setup completed successfully")
             
         except Exception as e:

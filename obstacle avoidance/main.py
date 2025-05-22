@@ -64,14 +64,13 @@ class ObstacleAvoidanceSystem:
 
     def run(self):
         """Main system loop"""
-        count = 0
         try:
             while True:
                 try:
                     self.environment.vehicle.sensors.poll()
                     self.environment.obstacle.sensors.poll()
-                    # self.logger.info(self.environment.vehicle.state['pos'])
-                    # self.logger.info(self.environment.vehicle.state['rotation'])
+                    self.logger.info(self.environment.vehicle.state['pos'])
+                    self.logger.info(self.environment.vehicle.state['rotation'])
                     # Get raw image from camera
                     image = self.environment.get_camera_image()
                     if image is None:
@@ -111,10 +110,6 @@ class ObstacleAvoidanceSystem:
                     
                     # Detect objects
                     detections = self.detector.detect(processed_image)
-
-                    # if count % 10 == 0:
-                    #     visualized_image.save(f"integrated_output_{count}.jpg")
-                    # count += 1
                     
                     # Determine if car is ahead
                     is_car_ahead = self.detector.is_car_detected(detections)
