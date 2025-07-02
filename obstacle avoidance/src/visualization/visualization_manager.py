@@ -27,8 +27,8 @@ class VisualizationManager:
         self.prev_control_decision = False
         self.last_vis_save_time = 0
         self.last_image = None
-        self.error_vis_failed = False
-        self.anomaly_vis_failed = False
+        self.error_vis_failed = True
+        self.anomaly_vis_failed = True
         self.current_anomalies = []
         
         # Create output directory
@@ -40,13 +40,13 @@ class VisualizationManager:
         cv2.resizeWindow(config.window_name, *config.main_window_size)
         cv2.moveWindow(config.window_name, 0, 0)
 
-        cv2.namedWindow(config.error_window_name, cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)
-        cv2.resizeWindow(config.error_window_name, *config.error_window_size)
-        cv2.moveWindow(config.error_window_name, 0, 480)
+        # cv2.namedWindow(config.error_window_name, cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)
+        # cv2.resizeWindow(config.error_window_name, *config.error_window_size)
+        # cv2.moveWindow(config.error_window_name, 0, 480)
 
-        cv2.namedWindow(config.anomaly_window_name, cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)
-        cv2.resizeWindow(config.anomaly_window_name, *config.anomaly_window_size)
-        cv2.moveWindow(config.anomaly_window_name, 640, 0)
+        # cv2.namedWindow(config.anomaly_window_name, cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)
+        # cv2.resizeWindow(config.anomaly_window_name, *config.anomaly_window_size)
+        # cv2.moveWindow(config.anomaly_window_name, 640, 0)
 
     def set_original_image(self, image: Image.Image):
         """Set the original, error-free reference image for comparison"""

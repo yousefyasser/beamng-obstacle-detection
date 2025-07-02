@@ -5,17 +5,24 @@ A real-time obstacle detection and avoidance system for autonomous vehicles usin
 ## Project Overview
 
 This system implements real-time object detection and obstacle avoidance for autonomous vehicles using:
-- DETR (DEtection TRansformer) for object detection
+- YOLOv11 for object detection
 - BeamNG.tech for vehicle simulation and visualization
 - Real-time performance monitoring and optimization
 - Advanced image processing pipeline
 
 ## System Architecture
 
+### System Context Diagram
+![System Context Diagram](docs/System%20context%20diagram.png)
+
+### Container Diagram
+![System Context Diagram](docs/container%20diagram.png)
+
+
 The project is organized into several key components:
 
 ### 1. Detection Manager (`detectionManager.py`)
-- Implements DETR-based object detection
+- Implements YOLO object detection
 - Handles model initialization and inference
 - Processes camera images to detect obstacles
 - Optimized for real-time performance
@@ -28,24 +35,16 @@ The project is organized into several key components:
   - Brightness/Contrast adjustment
   - Rain Effect
   - Color Filtering
-- Caching system for performance optimization
 
 ### 3. Visualization Manager (`visualizationManager.py`)
 - Handles real-time visualization of detections
 - Implements bounding box drawing
 - Manages text overlays and annotations
-- Optimized for smooth rendering
 
 ### 4. Environment Manager (`environmentManager.py`)
 - Manages BeamNG.tech integration
 - Handles vehicle control and camera setup
 - Manages simulation environment
-
-### 5. Performance Monitoring (`performanceMonitor.py`)
-- Tracks system performance metrics
-- Monitors CPU, memory, and GPU usage
-- Provides detailed performance reports
-- Implements adaptive frame timing
 
 ## Installation
 
@@ -99,14 +98,30 @@ python obstacle_avoidance/main.py
 ## Project Structure
 
 ```
-obstacle_avoidance/
-├── main.py                 # Main application entry point
-├── detectionManager.py     # Object detection implementation
-├── imageProcessor.py       # Image processing pipeline
-├── visualizationManager.py # Visualization handling
-├── environmentManager.py   # BeamNG integration
-└── DTO/                    # Data Transfer Objects
-    └── detection.py        # Detection data structures
+Bachelor project/
+├── obstacle avoidance/
+│   ├── main.py
+│   ├── DTO/
+│   │   ├── detection.py
+│   │   ├── visualization_data.py
+│   ├── src/
+│   │   ├── core/
+│   │   │   ├── anomaly_detector.py
+│   │   │   ├── detection_manager.py
+│   │   │   ├── environment_manager.py
+│   │   │   ├── error_propagation_manager.py
+│   │   ├── processors/
+│   │   │   ├── image_processor.py
+│   │   │   ├── base_processor.py
+│   │   ├── visualization/
+│   │   │   ├── visualization_manager.py
+│   │   ├── utils/
+│   │   │   ├── logger.py
+│   │   ├── config/
+│   │   │   ├── config.py
+│   │   │   ├── dataclasses.py
+├── requirements.txt
+└── README.md
 ```
 
 ## Contributing
@@ -117,10 +132,8 @@ obstacle_avoidance/
 4. Push to the branch
 5. Create a Pull Request
 
-## License
-
 ## Acknowledgments
 
 - Siemens Innexis VSI
 - BeamNG.tech
-- Facebook Research (DETR model)
+- Ultralytics (YOLOv11)

@@ -4,13 +4,13 @@ from typing import Dict, Tuple, Any
 @dataclass
 class VehicleConfig:
     """Configuration for vehicle setup"""
-    model: str = "etk800"
+    model: str = "scintilla"
     color: str = "Blue"
     license: str = "SENSORS"
-    position: Tuple[float, float, float] = (314.31365136802197, 119.54647984728217, 133.20636322908103)
-    rotation: Tuple[float, float, float, float] = (0.02141084335744381, 0.03649987280368805, -0.7528539299964905, 0.6568260192871094)
-    # position: Tuple[float, float, float] = (225.819738201797, -965.6643868908286, 263.4853021381423)
-    # rotation: Tuple[float, float, float, float] = (0.0173, -0.0019, 0.0000, 0.7720)
+    # position: Tuple[float, float, float] = (282.0726420581341, -289.3486400062684, 120.6660895264940)
+    # rotation: Tuple[float, float, float, float] = (0.0031202579848468304, -0.0012951375683769584, 0.7027040123939514, 0.7114742994308472)
+    position: Tuple[float, float, float] = (192.61466097831726, -856.0309405624866, 267.552119133994)
+    rotation: Tuple[float, float, float, float] = (-0.022755950689315796, 0.030111581087112427, 0.984528124332428, 0.1711140275001526)
 
 @dataclass
 class CameraConfig:
@@ -33,7 +33,7 @@ class Anomaly:
 @dataclass
 class ProcessingConfig:
     """Configuration for image processing parameters"""
-    gaussian_noise_std: float = 25.0
+    gaussian_noise_std: float = 50
     gaussian_blur_radius: float = 2.0
     brightness_factor: float = 0.7
     contrast_factor: float = 1.2

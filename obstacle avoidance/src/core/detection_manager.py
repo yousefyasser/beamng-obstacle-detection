@@ -4,6 +4,7 @@ from typing import List, Optional, Dict, Set, Tuple
 from dataclasses import dataclass
 from ..utils.logger import system_logger
 from ultralytics import YOLO
+import time
 
 @dataclass
 class Detection:
@@ -34,7 +35,7 @@ class DetectionManager:
         """Initialize the YOLOv11n model"""
         try:
             # Load YOLOv11n model
-            self.model = YOLO("yolo11m.pt")
+            self.model = YOLO("yolo11n.pt")
             
             # Set the device if not auto
             if self.device != 'auto':
@@ -59,6 +60,7 @@ class DetectionManager:
             List of Detection objects
         """
         try:
+            time_start = time.time()
             # YOLOv11n processes images directly, no need for custom transforms
             # Run inference with the YOLOv11n model
             results = self.model(image, conf=self.confidence_threshold)
@@ -89,7 +91,8 @@ class DetectionManager:
                         confidence=confidence,
                         bbox=(x1, y1, x2, y2)
                     ))
-            
+            time_end = time.time()
+            self.logger.info(f"Perception time taken: {time_end - time_start}")
             return detections
             
         except Exception as e:

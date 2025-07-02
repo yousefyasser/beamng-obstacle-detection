@@ -5,8 +5,8 @@ import sys
 from src.core.detection_manager import DetectionManager
 from src.core.environment_manager import EnvironmentManager
 from src.visualization.visualization_manager import VisualizationManager
-from src.processors.improved_image_processor import (
-    ImprovedImageProcessingPipeline,
+from src.processors.image_processor import (
+    ImageProcessingPipeline,
     GaussianNoiseProcessor,
     GaussianBlurProcessor,
     BrightnessContrastProcessor,
@@ -43,7 +43,7 @@ class ObstacleAvoidanceSystem:
             self.visualizer = VisualizationManager(config=self.visualization_config)
             
             # Initialize image processors with configuration
-            self.image_processors = ImprovedImageProcessingPipeline([
+            self.image_processors = ImageProcessingPipeline([
                 # GaussianNoiseProcessor(config=self.processing_config),
                 # GaussianBlurProcessor(config=self.processing_config),
                 # BrightnessContrastProcessor(config=self.processing_config),
@@ -69,8 +69,6 @@ class ObstacleAvoidanceSystem:
                 try:
                     self.environment.vehicle.sensors.poll()
                     self.environment.obstacle.sensors.poll()
-                    self.logger.info(self.environment.vehicle.state['pos'])
-                    self.logger.info(self.environment.vehicle.state['rotation'])
                     # Get raw image from camera
                     image = self.environment.get_camera_image()
                     if image is None:
